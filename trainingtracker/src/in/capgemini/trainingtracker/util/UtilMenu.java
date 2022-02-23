@@ -16,13 +16,12 @@ public class UtilMenu {
 
 	private void showMenu() {
 		System.out.println("------ TRAINING TRACKER APP ------");
-		System.out.println("1. Create Project or Register User");
-		System.out.println("2. list Projects or show all users");
-		System.out.println("3. Update Project or Update Profile");
-		System.out.println("4. Delete Project or Remove User");
-		System.out.println("5. Update password");
+		System.out.println("1.  Register User");
+		System.out.println("2.  show all users");
+		System.out.println("3.  Update Profile");
+		System.out.println("4.  Remove User");
+		System.out.println("5.  Update password");
 		System.out.println("0. Exit");
-		
 	}
 	
 	public void start() {
