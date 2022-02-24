@@ -17,7 +17,6 @@ public class DBUtil {
 	static {
 		try {
 			Class c = Class.forName(driverClassName);
-			System.out.println(c);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
