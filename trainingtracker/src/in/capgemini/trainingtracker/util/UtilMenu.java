@@ -1,5 +1,6 @@
 package in.capgemini.trainingtracker.util;
 
+import java.util.List;
 import java.util.Scanner;
 
 import in.capgemini.trainingtracker.exception.UserNotFoundException;
@@ -16,11 +17,12 @@ public class UtilMenu {
 
 	private void showMenu() {
 		System.out.println("------ TRAINING TRACKER APP ------");
-		System.out.println("1.  Register User");
-		System.out.println("2.  show all users");
-		System.out.println("3.  Update Profile");
-		System.out.println("4.  Remove User");
-		System.out.println("5.  Update password");
+		System.out.println("1. Register a new User");
+		System.out.println("2. View your profile");
+		System.out.println("3. Update Profile");
+		System.out.println("4. Change password");
+		System.out.println("5. Delete Profile");
+		System.out.println("6. Show All Registered User");
 		System.out.println("0. Exit");
 	}
 	
@@ -31,7 +33,7 @@ public class UtilMenu {
 		
 		do {
 			showMenu();
-			System.out.println("Enter your Choice : (1,2,3,4,0) : ");
+			System.out.println("Enter your Choice : (1,2,3,4,5,0) : ");
 			choice = sc.nextInt();
 			sc.nextLine();
 			switch(choice) {
@@ -46,9 +48,8 @@ public class UtilMenu {
 				user.setLoginid(sc.nextLine());
 				System.out.println("Enter password");
 				user.setPassword(sc.nextLine());
-				System.out.println("Project Created Successfully");
+				System.out.println("User Added Successfully");
 				System.out.println();
-				System.out.println(user);
 				userService.createUser(user);
 //				sc.nextLine();
 				break;
@@ -66,60 +67,77 @@ public class UtilMenu {
 					System.out.println("PASSWORD: " + userProfile.getPassword());
 					System.out.println("LOGINID: " + userProfile.getLoginid());
 				} catch (UserNotFoundException e) {
-					e.printStackTrace();
+					System.out.println(e.getMessage());
 				}
 				
 				break;
 				
 			case 3:
-				System.out.println("---Update Operation---");
-				System.out.println("Enter the id of project you want to chnage the description");
-				int idToUpdate = sc.nextInt();
-				sc.nextLine();
+				System.out.println("---Update Your Profile---");
 				System.out.println("What you want to update in your profile");
+				System.out.println("---name---");
 				System.out.println("---email---");
-				System.out.println("---password---");
 				System.out.println("---loginid---");
 				String input = sc.nextLine();
-				System.out.println("You have choosen to update : " + input);
-				System.out.println("Enter the updated value of : " + input);
+				System.out.println(" Enter your ID ");
+				int idToUpdate = sc.nextInt();
+				sc.nextLine();
+//				System.out.println("You have choosen to update : " + input);
+				System.out.println("Enter the new : " + input);
 				String updatedVallue = sc.nextLine();
 				userService.updateProfile(idToUpdate, input, updatedVallue);
-				System.out.println("Updated Successfully !!");
-//				switch (input) {
-//				case "email":
-//					
-//					break;
-//				case "password":
-//					
-//					break;
-//				case "loginid":
-//					
-//					break;
-//				default:
-//					break;
-//				}
-//				String description = sc.nextLine();
-//				projectService.updateProject(idToUpdate, description);
-//				System.out.println("Project Updated Successfully !!");
+				System.out.println("Your "+input + " has been updated successfully !!");
 				break;
 				
-				/*
+				
 			case 4:
-				System.out.println("---Delete Operation---");
-				System.out.println("Enter id of project to delete");
-				int id = sc.nextInt();
+				System.out.println("---Change your Password---");
+				System.out.println(" Enter your ID ");
+				int idToChangePassword = sc.nextInt();
+				sc.nextLine();
 				try {
-					projectService.removeProject(id);
-					System.out.println("Project removed successfully !");
-				} catch (ProductNotFoundException e) {
-					System.out.println("Problem is " +  e.getMessage());
+					userService.showProfile(idToChangePassword);
+					System.out.println("Enter the new password...");
+					String newPassword = sc.nextLine();
+					userService.updateProfile(idToChangePassword, "password", newPassword);
+//					sc.nextLine();
+					System.out.println("Your password is changed successfully!!");
+				} catch (UserNotFoundException e) {
+					System.out.println(e.getMessage());
 				}
-				sc.nextLine();		
+//				sc.nextLine();		
 				break;
-				*/
+				
+			case 5:
+				System.out.println("Delete your prpfile");
+				System.out.println("Enter your ID ");
+				int idTodelete = sc.nextInt();
+				
+				try {
+					userService.delete(idTodelete);
+					System.out.println("You have choosen to delete user with id : " + idTodelete);
+				} catch (UserNotFoundException e) {
+					System.out.println(e.getMessage());
+				}
+				System.out.println("Successfully deleted");
+				sc.nextLine();
+				
+				break;
+			case 6:
+				System.out.println("Here are all profiles...");
+				List<User> allProfiles = userService.showAllUsers();
+				if(allProfiles.size() > 0) {
+					for(User profile : allProfiles) {
+						System.out.println("User name: "+profile.getName()+" | "+"User id: "+profile.getId());
+					}
+				}
+				else {
+					System.out.println("No User registered");
+				}
+				
+				break;
 			case 0:
-				System.out.println("******** Thanks for using the tool ********");
+				System.out.println("******** Thanks for using the App ********");
 				System.exit(0);
 				break;
 				
@@ -132,7 +150,7 @@ public class UtilMenu {
 			continueChoice = sc.nextLine();
 			
 		} while (continueChoice.equals("yes"));
-		System.out.println("******** Thanks for using the tool ********");
+		System.out.println("******** Thanks for using Trainig Traker App ********");
 		System.out.println("Have a good day !!!");
 		
 	
