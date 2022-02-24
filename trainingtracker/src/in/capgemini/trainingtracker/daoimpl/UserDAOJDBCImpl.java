@@ -3,6 +3,8 @@ package in.capgemini.trainingtracker.daoimpl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import in.capgemini.trainingtracker.dao.UserDAO;
@@ -38,12 +40,16 @@ public class UserDAOJDBCImpl extends DBUtil implements UserDAO{
 			sql = "update users set email=? where id=?";
 			
 		}
-		else if(toBeUpdated.equals("password")) {
-			sql = "update users set password=? where id=?";
+		else if(toBeUpdated.equals("name")) {
+			sql = "update users set name=? where id=?";
 		}
 		else if(toBeUpdated.equals("loginid")) {
 			sql = "update users set loginid=? where id=?";
 		}
+		else if(toBeUpdated.equals("password")) {
+			sql = "update users set password=? where id=?";
+		}
+		
 		PreparedStatement pstmt = preparedStatement(sql);
 		try {
 			pstmt.setString(1, updatedValue);
@@ -61,13 +67,83 @@ public class UserDAOJDBCImpl extends DBUtil implements UserDAO{
 
 	@Override
 	public List<User> list() {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "select * from users";
+		PreparedStatement pstmt = preparedStatement(sql);
+		User user;
+		List<User> users = new ArrayList<>();
+		
+		try {
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				user = new User();
+				user.setId(rs.getInt("id"));
+				user.setName(rs.getString("name"));
+				user.setLoginid(rs.getString("loginid"));
+				user.setEmail(rs.getString("email"));
+				user.setPassword(rs.getString("password"));
+				users.add(user);
+			}
+		} catch (SQLException e) {
+			System.out.println("Problem is : " + e.getMessage());
+		}
+		finally {
+			closePreparedStatement();
+			closeConnection();
+			
+		}
+		return users;
 	}
 
 	@Override
 	public void delete(int id) throws UserNotFoundException {
-		// TODO Auto-generated method stub
+		
+		String sql = "select * from users";
+		PreparedStatement pstmt = preparedStatement(sql);	
+		User user = new User();
+		ResultSet rs;
+		boolean found = false;
+		try {
+
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				if(rs.getInt("id") == id) {
+					found = true;
+				}
+			}
+			
+		} 
+		catch (SQLException e) {
+		System.out.println("Problem is : " + e.getMessage());
+			}
+		finally {
+			closePreparedStatement();
+			closeConnection();
+				}
+			
+		
+		if(found == true) {
+			try {
+				String sql1 = "delete from users where id=?";
+				PreparedStatement pstmt1 = preparedStatement(sql1);
+				pstmt1.setInt(1,id);
+				pstmt1.execute();
+			} catch (Exception e) {
+				System.out.println("Problem is : " + e.getMessage());
+			}
+			finally {
+				closePreparedStatement();
+				closeConnection();
+			}
+		}
+		else {
+			throw new UserNotFoundException("user is not found with id : "+id);
+		}
+		
+		
+		
+		
+		
+		
 		
 	}
 

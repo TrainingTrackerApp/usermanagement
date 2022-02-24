@@ -1,6 +1,7 @@
 package in.capgemini.trainingtracker.serviceimpl;
 
 import java.util.Date;
+import java.util.List;
 
 import in.capgemini.trainingtracker.dao.UserDAO;
 import in.capgemini.trainingtracker.daoimpl.UserDAOJDBCImpl;
@@ -20,6 +21,7 @@ public class UserServiceimpl implements UserService {
 		user.setCreatedAt(new Date());
 		user.setUpdatedAt(new Date());
 		userDAO.save(user);
+		System.out.println("User saved !!");
 	}
 	@Override
 	public void updateProfile(int id, String whatToBeUpdated, String updatedValue) {
@@ -31,6 +33,16 @@ public class UserServiceimpl implements UserService {
 		User user =  userDAO.show(id);
 		return user;
 	}
+	@Override
+	public void delete(int id) throws UserNotFoundException {
+		userDAO.delete(id);
+		
+	}
+	@Override
+	public List<User> showAllUsers(){
+		return userDAO.list();
+	}
+	
 	
 	
 
