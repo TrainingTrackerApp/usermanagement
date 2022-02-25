@@ -49,7 +49,7 @@ public class UtilMenu {
 				System.out.println("Enter password");
 				user.setPassword(sc.nextLine());
 				System.out.println("User Added Successfully");
-				System.out.println();
+//				System.out.println();
 				userService.createUser(user);
 //				sc.nextLine();
 				break;

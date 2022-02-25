@@ -1,5 +1,6 @@
 package in.capgemini.trainingtracker.serviceimpl;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,12 @@ public class UserServiceimpl implements UserService {
 	}
 	@Override
 	public void createUser(User user) {
-		user.setCreatedAt(new Date());
+//		user.setCreatedAt(new Date());
+//		createdAt
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		String strDate= formatter.format(date);
+		user.setCreatedAt(strDate);
 		user.setUpdatedAt(new Date());
 		userDAO.save(user);
 		System.out.println("User saved !!");
