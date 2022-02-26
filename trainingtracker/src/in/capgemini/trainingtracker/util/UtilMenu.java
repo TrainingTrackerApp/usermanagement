@@ -140,6 +140,8 @@ public class UtilMenu {
 				System.out.println("******** Thanks for using the App ********");
 				System.exit(0);
 				break;
+			case 45:
+				System.out.println("Demo");
 				
 			default :
 				System.out.println("Wrong Choice");
